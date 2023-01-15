@@ -7,6 +7,7 @@ import com.hamedsafari.filckrphotos.data.repository.mappers.toDomainModel
 import com.hamedsafari.filckrphotos.mockData.FakePhotos
 import com.hamedsafari.filckrphotos.mockData.MockPhotoRepository
 import com.hamedsafari.filckrphotos.mockData.MockPhotosDataSource
+import com.hamedsafari.filckrphotos.mockData.MockSearchSuggestionDao
 import com.hamedsafari.filckrphotos.rules.TestDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -24,6 +25,7 @@ class SearchViewModelTest{
     @get:Rule
     val testDispatcher = TestDispatcherRule()
 
+    private lateinit var searchSuggestionDao: MockSearchSuggestionDao
     private lateinit var dataSource: PhotosDataSource
     private lateinit var repository: PhotosRepository
     private lateinit var viewModel: SearchViewModel
@@ -31,13 +33,23 @@ class SearchViewModelTest{
     @Before
     fun setup() {
         dataSource = MockPhotosDataSource(ErrorHandlerImpl())
-        repository = MockPhotoRepository(dataSource)
+        searchSuggestionDao = MockSearchSuggestionDao()
+        repository = MockPhotoRepository(searchSuggestionDao, dataSource)
         viewModel = SearchViewModel(repository = repository)
     }
 
     @Test
     fun uiState_whenInitialized_thenShowLoading() = runTest {
-        assertEquals(SearchUiState.NoSearchInput(isLoading = false, errorMessages =""), viewModel.uiState.value)
+        assertEquals(SearchUiState.NoSearchInput(isLoading = false, errorMessages ="", suggestions = emptyList()), viewModel.uiState.value)
+    }
+
+    @Test
+    fun uiState_whenInitialized_then_collect_searchTerms() = runTest {
+        val collectJob = launch(UnconfinedTestDispatcher()) { viewModel.uiState.collect() }
+        repository.saveSearchTerm("1")
+        assertEquals(SearchUiState.NoSearchInput(isLoading = false, errorMessages = "", suggestions = listOf("1")), viewModel.uiState.value)
+
+        collectJob.cancel()
     }
 
     @Test

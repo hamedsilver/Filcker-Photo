@@ -1,4 +1,4 @@
-package com.hamedsafari.filckrphotos.features.search
+package com.hamedsafari.filckrphotos.features.search.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

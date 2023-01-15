@@ -25,6 +25,18 @@
         tools:layout_editor_absoluteX="16dp"
         tools:listitem="@layout/item_search_terms" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_suggestions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:listitem="@layout/item_search_suggestion" />
+
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="40dp"
@@ -32,6 +44,19 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Something went Wrong!"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search" />

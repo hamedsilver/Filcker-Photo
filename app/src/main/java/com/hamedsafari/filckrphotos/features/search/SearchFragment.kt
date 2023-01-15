@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hamedsafari.filckrphotos.MainApplication
 import com.hamedsafari.filckrphotos.R
 import com.hamedsafari.filckrphotos.databinding.FragmentSearchBinding
+import com.hamedsafari.filckrphotos.features.search.adapter.PhotosAdapter
+import com.hamedsafari.filckrphotos.features.search.adapter.SearchSuggestionAdapter
+import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_URL
 import com.hamedsafari.filckrphotos.utils.collectLifecycleFlow
 
 class SearchFragment : Fragment() {
@@ -27,6 +30,7 @@ class SearchFragment : Fragment() {
     }
 
     private lateinit var photoAdapter: PhotosAdapter
+    private lateinit var suggestionAdapter: SearchSuggestionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,11 +62,16 @@ class SearchFragment : Fragment() {
 
     private fun setupRecyclerView() {
 
+        suggestionAdapter = SearchSuggestionAdapter {
+            binding.search.onActionViewExpanded()
+            binding.search.setQuery(it, false)
+        }
+
         photoAdapter = PhotosAdapter {
             findNavController().navigate(
                 R.id.action_SearchFragment_to_DetailFragment,
                 bundleOf(
-                    "image" to it.image_url
+                    KEY_IMAGE_URL to it.image_url
                 )
             )
         }
@@ -72,21 +81,36 @@ class SearchFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        binding.recyclerViewSuggestions.apply {
+            adapter = suggestionAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
     }
 
     private fun setupObservers() {
 
-        collectLifecycleFlow(viewModel.uiState) {
-            when (it) {
+        collectLifecycleFlow(viewModel.uiState) { state ->
+            when (state) {
                 is SearchUiState.HasSearchInput -> {
-                    photoAdapter.submitList(it.photos)
+                    photoAdapter.submitList(state.photos)
                 }
                 is SearchUiState.NoSearchInput -> {
+                    suggestionAdapter.submitList(state.suggestions)
                     photoAdapter.submitList(emptyList())
+                    binding.recyclerViewSuggestions.scrollToPosition(0)
                 }
             }
 
-            binding.progress.isVisible = it.isLoading
+            binding.recyclerViewSuggestions.isVisible = state is SearchUiState.NoSearchInput &&
+                    state.isLoading.not() &&
+                    state.errorMessages.isEmpty()
+            binding.recyclerView.isVisible = state is SearchUiState.HasSearchInput &&
+                    state.errorMessages.isEmpty()
+            binding.progress.isVisible = state.isLoading
+
+            binding.errorMessage.text = state.errorMessages
+            binding.errorMessage.isVisible = state.errorMessages.isNotEmpty() && state.isLoading.not()
         }
     }
 

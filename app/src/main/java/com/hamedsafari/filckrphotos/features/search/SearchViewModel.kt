@@ -35,6 +35,7 @@ class SearchViewModel(
 
     init {
         handleIntent()
+        getSearchSuggestions()
     }
 
     @OptIn(FlowPreview::class)
@@ -51,12 +52,24 @@ class SearchViewModel(
             .distinctUntilChanged()
             .onEach { query ->
                 viewModelState.update { it.copy(photos = emptyList(), isLoading = true) }
+                repository.saveSearchTerm(query)
                 repository.search(query).mapOnSuccess { photos ->
-                    viewModelState.update { it.copy(photos = photos, isLoading = false) }
+                    viewModelState.update { it.copy(photos = photos, isLoading = false, errorMessages = "") }
                 }.onError { error ->
-                    viewModelState.update { it.copy(errorMessages = error.message.orEmpty(), isLoading = false) }
+                    viewModelState.update {
+                        it.copy(
+                            errorMessages = error.message.orEmpty(),
+                            isLoading = false
+                        )
+                    }
                 }
             }.collect()
+    }
+
+    private fun getSearchSuggestions() = viewModelScope.launch {
+        repository.getSearchSuggestions().collect { suggestions ->
+            viewModelState.update { it.copy(suggestions = suggestions) }
+        }
     }
 
 }

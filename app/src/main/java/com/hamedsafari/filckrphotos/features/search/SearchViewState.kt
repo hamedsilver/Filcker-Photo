@@ -18,6 +18,7 @@ sealed interface SearchUiState {
      *
      */
     data class NoSearchInput(
+        val suggestions: List<String>,
         override val isLoading: Boolean,
         override val errorMessages: String,
     ) : SearchUiState
@@ -36,6 +37,7 @@ sealed interface SearchUiState {
  * representation of the Search state.
  */
 data class SearchViewModelState(
+    val suggestions: List<String> = emptyList(),
     val photos: List<Photo> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessages: String = ""
@@ -50,6 +52,7 @@ data class SearchViewModelState(
             SearchUiState.NoSearchInput(
                 isLoading = isLoading,
                 errorMessages = errorMessages,
+                suggestions = suggestions
             )
         } else {
             SearchUiState.HasSearchInput(

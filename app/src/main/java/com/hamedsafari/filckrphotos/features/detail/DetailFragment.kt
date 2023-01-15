@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.hamedsafari.filckrphotos.databinding.FragmentDetailBinding
 import com.hamedsafari.filckrphotos.utils.ImageLoader
+import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_URL
 
 class DetailFragment : Fragment() {
 
@@ -23,7 +24,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ImageLoader.loadImage(binding.image, arguments?.getString("image").orEmpty())
+        ImageLoader.loadImage(binding.image, arguments?.getString(KEY_IMAGE_URL).orEmpty())
     }
 
     override fun onDestroyView() {
