@@ -13,6 +13,7 @@ import com.hamedsafari.filckrphotos.data.repository.BookmarkRepository
 import com.hamedsafari.filckrphotos.data.repository.BookmarkRepositoryImpl
 import com.hamedsafari.filckrphotos.data.repository.PhotosRepository
 import com.hamedsafari.filckrphotos.data.repository.PhotosRepositoryImpl
+import com.hamedsafari.filckrphotos.features.bookmark.BookmarkViewModelFactory
 import com.hamedsafari.filckrphotos.features.detail.DetailViewModelFactory
 import com.hamedsafari.filckrphotos.features.search.SearchViewModelFactory
 
@@ -44,5 +45,5 @@ class AppContainer(context: Context) {
     //Presentation - viewModelFactory
     val searchViewModelFactory by lazy { SearchViewModelFactory(photosRepository) }
     fun detailViewModelFactory(id: String) = DetailViewModelFactory(id, bookmarkRepository)
-
+    val bookmarkViewModelFactory by lazy { BookmarkViewModelFactory(bookmarkRepository) }
 }

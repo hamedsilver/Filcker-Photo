@@ -12,7 +12,9 @@ import com.hamedsafari.filckrphotos.databinding.FragmentDetailBinding
 import com.hamedsafari.filckrphotos.domain.Photo
 import com.hamedsafari.filckrphotos.utils.ImageLoader
 import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_ID
+import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_TITLE
 import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_URL
+import com.hamedsafari.filckrphotos.utils.KEY_THUMBNAIL_IMAGE_URL
 import com.hamedsafari.filckrphotos.utils.collectLifecycleFlow
 
 class DetailFragment : Fragment() {
@@ -21,7 +23,9 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var id: String
+    private lateinit var title: String
     private lateinit var imageUrl: String
+    private lateinit var thumbnailUrl: String
 
     private val viewModel by viewModels<DetailViewModel> {
         val appContainer = (activity?.application as MainApplication).appContainer
@@ -39,7 +43,9 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        title = arguments?.getString(KEY_IMAGE_TITLE).orEmpty()
         imageUrl = arguments?.getString(KEY_IMAGE_URL).orEmpty()
+        thumbnailUrl = arguments?.getString(KEY_THUMBNAIL_IMAGE_URL).orEmpty()
         ImageLoader.loadImage(binding.image, imageUrl)
         setupObservers()
     }
@@ -58,8 +64,8 @@ class DetailFragment : Fragment() {
                     binding.likeButton.setOnClickListener {
                         viewModel.toggleBookmark(
                             Photo(
-                                id = id, image_url = imageUrl, title = "",
-                                thumbnail_url = ""
+                                id = id, title = title, image_url = imageUrl,
+                                thumbnail_url = thumbnailUrl
                             ), state.isBookmarked
                         )
                     }

@@ -5,19 +5,30 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/SearchFragment">
 
+    <action
+        android:id="@+id/action_to_BookmarkFragment"
+        app:destination="@id/BookmarkFragment" />
+
+    <action
+        android:id="@+id/action_to_DetailFragment"
+        app:destination="@id/DetailFragment" />
+
     <fragment
         android:id="@+id/SearchFragment"
         android:name="com.hamedsafari.filckrphotos.features.search.SearchFragment"
         tools:layout="@layout/fragment_search">
 
-        <action
-            android:id="@+id/action_SearchFragment_to_DetailFragment"
-            app:destination="@id/DetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/DetailFragment"
         android:name="com.hamedsafari.filckrphotos.features.detail.DetailFragment"
         tools:layout="@layout/fragment_detail">
+    </fragment>
+
+    <fragment
+        android:id="@+id/BookmarkFragment"
+        android:name="com.hamedsafari.filckrphotos.features.bookmark.BookmarkFragment"
+        tools:layout="@layout/fragment_bookmark">
     </fragment>
 </navigation>
