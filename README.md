@@ -45,6 +45,7 @@ This application implements the following concepts :
 -   Navigation Component
 -   ViewModel
 -   Repository
+-   Unit Test
 - [Kotlin](https://kotlinlang.org/)  
 - [Coroutines](https://github.com/Kotlin/kotlinx.coroutines)  
 - [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/)
