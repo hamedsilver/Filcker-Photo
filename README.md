@@ -59,6 +59,7 @@ This application implements the following concepts :
 - Using Jetpack compose
 - Animations using Jetpack compose
 - Pagination for search list
+- Modularize Project 
 
 
 ## Download
