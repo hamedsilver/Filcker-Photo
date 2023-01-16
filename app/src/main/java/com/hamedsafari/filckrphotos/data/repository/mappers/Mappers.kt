@@ -1,5 +1,6 @@
 package com.hamedsafari.filckrphotos.data.repository.mappers
 
+import com.hamedsafari.filckrphotos.data.local.model.BookmarkedPhotoEntity
 import com.hamedsafari.filckrphotos.data.network.model.PhotoApiModel
 import com.hamedsafari.filckrphotos.data.network.model.PhotosSearchApiModel
 import com.hamedsafari.filckrphotos.domain.Photo
@@ -32,3 +33,19 @@ private fun PhotoApiModel.buildImageUrl(size: ImageSize): String =
         append(size.size)
         append(".jpg")
     }
+
+fun BookmarkedPhotoEntity.toDomainModel() =
+    Photo(
+        id = id,
+        title = title,
+        thumbnail_url = thumbnail_url,
+        image_url = image_url
+    )
+
+fun Photo.toLocalModel() =
+    BookmarkedPhotoEntity(
+        id = id,
+        title = title,
+        thumbnail_url = thumbnail_url,
+        image_url = image_url
+    )

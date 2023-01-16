@@ -11,9 +11,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         tools:src="@tools:sample/avatars"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/like_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/ic_baseline_favorite_border_24"
+        android:contentDescription="@string/description_like_photo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

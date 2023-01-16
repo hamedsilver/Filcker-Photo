@@ -16,6 +16,7 @@ import com.hamedsafari.filckrphotos.R
 import com.hamedsafari.filckrphotos.databinding.FragmentSearchBinding
 import com.hamedsafari.filckrphotos.features.search.adapter.PhotosAdapter
 import com.hamedsafari.filckrphotos.features.search.adapter.SearchSuggestionAdapter
+import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_ID
 import com.hamedsafari.filckrphotos.utils.KEY_IMAGE_URL
 import com.hamedsafari.filckrphotos.utils.collectLifecycleFlow
 
@@ -26,7 +27,7 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModels<SearchViewModel> {
         val appContainer = (activity?.application as MainApplication).appContainer
-        appContainer.filmDetailViewModelFactory
+        appContainer.searchViewModelFactory
     }
 
     private lateinit var photoAdapter: PhotosAdapter
@@ -71,6 +72,7 @@ class SearchFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_SearchFragment_to_DetailFragment,
                 bundleOf(
+                    KEY_IMAGE_ID to it.id,
                     KEY_IMAGE_URL to it.image_url
                 )
             )
