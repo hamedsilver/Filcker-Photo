@@ -56,7 +56,7 @@ This application implements the following concepts :
 
 
 
-## Roadmap (Features to be added )
+## Roadmap (Features to be added 🛠️ )
 - Using Jetpack compose
 - Animations using Jetpack compose
 - Pagination for search list
